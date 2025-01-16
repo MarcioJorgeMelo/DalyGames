@@ -6,8 +6,10 @@ import { GameProps } from "@/utils/types/game";
 
 async function getData(title: string) {
     try {
+
+        const decodeTitle = decodeURI(title);
         
-        const response = await fetch(`${process.env.NEXT_API_URL}/next-api/?api=game&title=${title}`);
+        const response = await fetch(`${process.env.NEXT_API_URL}/next-api/?api=game&title=${decodeTitle}`);
 
         return response.json();
 
