@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Daly Games - Descubra jogos incríveis para se divertir.",
   description: "Mais de 10 mil jogos separados e organizados especialmente para voçê.",
   keywords: ['games', 'jogos', 'steam'],
