@@ -4,13 +4,16 @@ import { GameProps } from "@/utils/types/game";
 import { Container } from "@/components/container";
 import { Label } from "./components/label";
 import { GameCard } from "@/components/gameCard";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
+type Props = {
   params: { id: string };
-}): Promise<Metadata> {
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent?: ResolvingMetadata
+): Promise<Metadata> {
   const res = await fetch(
     `${process.env.NEXT_API_URL}/next-api/?api=game&id=${params.id}`,
     {
