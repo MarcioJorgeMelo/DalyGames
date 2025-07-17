@@ -34,14 +34,22 @@ export async function generateMetadata(
 }
 
 async function getData(id: string): Promise<GameProps> {
-  const res = await fetch(
-    `${process.env.NEXT_API_URL}/next-api/?api=game&id=${id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_API_URL}/next-api/?api=game&id=${id}`,
+      {
+        cache: "no-store",
+      }
+    );
 
-  return res.json();
+    if (!res.ok) {
+      throw new Error("Falha ao carregar dados do jogo");
+    }
+
+    return await res.json();
+  } catch (error) {
+    redirect("/");
+  }
 }
 
 async function getGameDay(): Promise<GameProps> {
@@ -107,7 +115,14 @@ export default async function GameDetail({
 
         <div className="flex">
           <div className="flex-grow">
-            <GameCard data={gameDay} />
+            <GameCard
+              data={
+                gameDay || {
+                  title: "Sem recomendação",
+                  description: "Nenhuma recomendação disponível.",
+                }
+              }
+            />
           </div>
         </div>
       </Container>
