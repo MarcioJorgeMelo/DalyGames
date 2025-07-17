@@ -7,13 +7,11 @@ import { GameCard } from "@/components/gameCard";
 import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent?: ResolvingMetadata): Promise<Metadata> {
+  const params = await props.params;
   const res = await fetch(
     `${process.env.NEXT_API_URL}/next-api/?api=game&id=${params.id}`,
     {
@@ -63,11 +61,12 @@ async function getGameDay(): Promise<GameProps> {
   return res.json();
 }
 
-export default async function GameDetail({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function GameDetail(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const data = await getData(params.id);
   const gameDay = await getGameDay();
 
